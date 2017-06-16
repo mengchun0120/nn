@@ -1,7 +1,9 @@
 #ifndef __NODE_H__
 #define __NODE_H__
 
-#include <vector>
+#ifndef __TYPES_HPP__
+#include "types.hpp"
+#endif
 
 class Node {
 public:
@@ -17,29 +19,29 @@ public:
 
     void set_act_der(double new_act_der) { act_der_ = new_act_der; }
 
-    void add_in_weight(unsigned int weight_id);
+    void add_in_weight(Index weight_id);
 
     unsigned int num_in_weights() const { return in_weights_.size(); }
 
-    std::vector<unsigned int>::const_iterator in_weights_begin() const { return in_weights_.begin(); }
+    IndexVector::const_iterator in_weights_begin() const { return in_weights_.begin(); }
 
-    std::vector<unsigned int>::const_iterator in_weights_end() const { return in_weights_.end(); }
+    IndexVector::const_iterator in_weights_end() const { return in_weights_.end(); }
 
-    void add_out_weight(unsigned int weight_id);
+    void add_out_weight(Index weight_id);
 
     unsigned int num_out_weights() const { return out_weights_.size(); }
 
-    std::vector<unsigned int>::const_iterator out_weights_begin() const { return out_weights_.begin(); }
+    IndexVector::const_iterator out_weights_begin() const { return out_weights_.begin(); }
 
-    std::vector<unsigned int>::const_iterator out_weights_end() const { return out_weights_.end(); }
+    IndexVector::const_iterator out_weights_end() const { return out_weights_.end(); }
 
     unsigned int get_flag() const { return flag_; }
 
 private:
     double act_;
     double act_der_;
-    std::vector<unsigned int> in_weights_;
-    std::vector<unsigned int> out_weights_;
+    IndexVector in_weights_;
+    IndexVector out_weights_;
     unsigned int flag_;
 };
 

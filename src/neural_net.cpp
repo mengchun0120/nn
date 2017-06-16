@@ -6,7 +6,7 @@ NeuralNet::NeuralNet(unsigned int num_nodes, unsigned int num_weights):
 {
 }
 
-void NeuralNet::bind_weight(unsigned int weight_id, unsigned int tail_id, unsigned int head_id)
+void NeuralNet::bind_weight(Index weight_id, Index tail_id, Index head_id)
 {
     assert(tail_id < nodes_.size() && head_id < nodes_.size() && weight_id < weights_.size());
 

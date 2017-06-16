@@ -6,7 +6,7 @@ COMMON_FLAGS=-std=c++11 -Wall -I$(SRC_DIR) -DHAVE_INLINE
 DEBUG_FLAGS=-g $(COMMON_FLAGS)
 RELEASE_FLAGS=-O3 $(COMMON_CFLAGS) -DGSL_RANGE_CHECK_OFF -DNDEBUG
 MAIN_TASK=$(BIN_DIR)/nn
-OBJS=$(BIN_DIR)/node.o $(BIN_DIR)/weight.o $(BIN_DIR)/neural_net.o
+OBJS=$(BIN_DIR)/node.o $(BIN_DIR)/weight.o $(BIN_DIR)/neural_net.o $(BIN_DIR)/types.o
 TEST_OBJS=
 
 debug: CPPFLAGS=$(DEBUG_FLAGS)
@@ -15,7 +15,7 @@ debug: $(MAIN_TASK) $(TEST_OBJS)
 release: CPPFLAGS=$(RELEASE_FLAGS)
 release: $(MAIN_TASK) $(TEST_OBJS)
 
-$(MAIN_TASK): $(SRC_DIR)/main.o $(OBJS)
+$(MAIN_TASK): $(SRC_DIR)/main.cpp $(OBJS)
 	g++ $(CPPFLAGS) -o $@ $^ $(LIBS)
 
 $(BIN_DIR)/%.o: $(SRC_DIR)/%.cpp $(SRC_DIR)/%.hpp

@@ -1,5 +1,4 @@
-#include "node.hpp"
-#include "weight.hpp"
+#include "neural_net.hpp"
 
 int main(int argc, const char *argv[])
 {

@@ -11,15 +11,15 @@ public:
 
     virtual ~NeuralNet() {}
 
-    void bind_weight(unsigned int weight_id, unsigned int tail_id, unsigned int head_id);
+    void bind_weight(Index weight_id, Index tail_id, Index head_id);
 
-    const Node& get_node(unsigned int node_id) const
+    const Node& get_node(Index node_id) const
     {
         assert(node_id < nodes_.size());
         return nodes_[node_id];
     }
 
-    Node& get_node(unsigned int node_id)
+    Node& get_node(Index node_id)
     {
         assert(node_id < nodes_.size());
         return nodes_[node_id];
@@ -35,13 +35,13 @@ public:
 
     std::vector<Node>::iterator nodes_end() { return nodes_.end(); }
 
-    const Weight& get_weight(unsigned int weight_id) const
+    const Weight& get_weight(Index weight_id) const
     {
         assert(weight_id < weights_.size());
         return weights_[weight_id];
     }
 
-    Weight& get_weight(unsigned int weight_id)
+    Weight& get_weight(Index weight_id)
     {
         assert(weight_id < weights_.size());
         return weights_[weight_id];
