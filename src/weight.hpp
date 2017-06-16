@@ -1,5 +1,5 @@
-#ifndef __WEIGHT_H__
-#define __WEIGHT_H__
+#ifndef __WEIGHT_HPP__
+#define __WEIGHT_HPP__
 
 #ifndef __TYPES_HPP__
 #include "types.hpp"

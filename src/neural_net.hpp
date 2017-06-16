@@ -1,5 +1,5 @@
-#ifndef __NEURAL_NET__
-#define __NEURAL_NET__
+#ifndef __NEURAL_NET_HPP__
+#define __NEURAL_NET_HPP__
 
 #include "node.hpp"
 #include "weight.hpp"
@@ -7,7 +7,7 @@
 
 class NeuralNet {
 public:
-    NeuralNet(unsigned int num_nodes, unsigned int num_weights);
+    NeuralNet(unsigned int num_inputs, unsigned int num_hiddens, unsigned int num_outputs, unsigned int num_weights);
 
     virtual ~NeuralNet() {}
 
@@ -26,6 +26,24 @@ public:
     }
 
     unsigned int num_nodes() const { return nodes_.size(); }
+
+    unsigned int num_inputs() const { return num_inputs_; }
+
+    unsigned int num_outputs() const { return num_outputs_; }
+
+    std::vector<Node>::const_iterator input_begin() const { return nodes_.begin(); }
+
+    std::vector<Node>::iterator input_begin() { return nodes_.begin(); }
+
+    std::vector<Node>::const_iterator input_end() const { return nodes_.begin() + num_inputs_; }
+
+    std::vector<Node>::iterator input_end() { return nodes_.begin() + num_inputs_; }
+
+    std::vector<Node>::iterator output_begin() { return nodes_.begin(); }
+
+    std::vector<Node>::const_iterator output_end() const { return nodes_.begin() + num_inputs_; }
+
+    std::vector<Node>::iterator output_end() { return nodes_.begin() + num_inputs_; }
 
     std::vector<Node>::const_iterator nodes_begin() const { return nodes_.begin(); }
 
@@ -58,6 +76,9 @@ public:
     std::vector<Weight>::iterator weights_end() { return weights_.end(); }
 
 private:
+    unsigned int num_inputs_;
+    unsigned int num_hiddens_;
+    unsigned int num_outputs_;
     std::vector<Node> nodes_;
     std::vector<Weight> weights_;
 };

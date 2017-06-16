@@ -1,7 +1,10 @@
 #include "neural_net.hpp"
 
-NeuralNet::NeuralNet(unsigned int num_nodes, unsigned int num_weights):
-    nodes_(num_nodes),
+NeuralNet::NeuralNet(unsigned int num_inputs, unsigned int num_hiddens, unsigned int num_outputs, unsigned int num_weights):
+    num_inputs_(num_inputs),
+    num_hiddens_(num_hiddens),
+    num_outputs_(num_outputs),
+    nodes_(num_inputs + num_outputs + num_hiddens + 1),
     weights_(num_weights)
 {
 }
