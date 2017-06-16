@@ -10,7 +10,7 @@ struct ActFunc {
 };
 
 enum ActFuncTypes {
-    AF_RELINEAR
+    AF_RELINEAR,
     AF_TOTAL
 };
 

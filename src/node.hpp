@@ -19,6 +19,10 @@ public:
 
     void set_act_der(double new_act_der) { act_der_ = new_act_der; }
 
+    double get_output() const { return output_; }
+
+    void set_output(double new_output) { output_ = new_output; }
+
     void add_in_weight(Index weight_id);
 
     unsigned int num_in_weights() const { return in_weights_.size(); }
@@ -40,6 +44,7 @@ public:
 private:
     double act_;
     double act_der_;
+    double output_;
     IndexVector in_weights_;
     IndexVector out_weights_;
     unsigned int flag_;
