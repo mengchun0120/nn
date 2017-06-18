@@ -1,15 +1,23 @@
+#include <cassert>
+#include "node.hpp"
 #include "act_func.hpp"
 
-const ActFunc g_act_funcs[] = {
+ActFunc ActFunc::act_funcs[] = {
     ActFunc(relinear, relinear_der)
 };
 
-double relinear(double x)
+ActFunc *ActFunc::get_act_func(ActFuncType type)
 {
-    return (x > 0.0) ? x : 0.0;
+    assert(type >= 0 && type < AF_TOTAL);
+    return &act_funcs[type];
 }
 
-double relinear_der(double x)
+double relinear(Node *n)
 {
-    return (x >= 0.0) ? 1 : 0.0;
+    return (n->output() > 0.0) ? n->output() : 0.0;
+}
+
+double relinear_der(Node *n)
+{
+    return (n->output() >= 0.0) ? 1.0 : 0.0;
 }

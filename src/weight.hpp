@@ -1,43 +1,38 @@
 #ifndef __WEIGHT_HPP__
 #define __WEIGHT_HPP__
 
-#ifndef __TYPES_HPP__
-#include "types.hpp"
-#endif
+#include <vector>
+
+class Edge;
 
 class Weight {
 public:
-    Weight(): value_(0) {}
+    Weight(): value_(0.0), der_(0.0) {}
 
     virtual ~Weight() {}
 
-    double get_value() const { return value_; }
+    double value() const { return value_; }
 
     void set_value(double new_value) { value_ = new_value; }
 
-    void add_tail(Index node_id);
+    std::vector<Edge *>::const_iterator edges_begin() const { return edges_.begin(); }
 
-    unsigned int num_tails() const { return tails_.size(); }
+    std::vector<Edge *>::iterator edges_begin() { return edges_.begin(); }
 
-    IndexVector::const_iterator tails_begin() const { return tails_.begin(); }
+    std::vector<Edge *>::const_iterator edges_end() const { return edges_.end(); }
 
-    IndexVector::const_iterator tails_end() const { return tails_.end(); }
+    std::vector<Edge *>::iterator edges_end() { return edges_.end(); }
 
-    void add_head(Index node_id);
+    void add_edge(Edge *e);
 
-    unsigned int num_heads() const { return heads_.size(); }
+    double der() const { return der_; }
 
-    IndexVector::const_iterator heads_begin() const { return heads_.begin(); }
-
-    IndexVector::const_iterator heads_end() const { return heads_.end(); }
-
-    unsigned int get_flag() const { return flag_; }
+    double cal_der();
 
 private:
     double value_;
-    IndexVector tails_;
-    IndexVector heads_;
-    unsigned int flag_;
+    double der_;
+    std::vector<Edge *> edges_;
 };
 
 #endif

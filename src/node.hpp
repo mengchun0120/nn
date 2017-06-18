@@ -1,53 +1,87 @@
 #ifndef __NODE_HPP__
 #define __NODE_HPP__
 
-#ifndef __TYPES_HPP__
-#include "types.hpp"
-#endif
+#include <cassert>
+#include <cstddef>
+#include <vector>
+
+class Edge;
+class ActFunc;
 
 class Node {
 public:
-    Node(): act_(0), act_der_(0) {}
+    Node(ActFunc *act_func=nullptr);
 
     virtual ~Node() {}
 
-    double get_act() const { return act_; }
+    double act() const { return act_; }
 
     void set_act(double new_act) { act_ = new_act; }
 
-    double get_act_der() const { return act_der_; }
-
-    void set_act_der(double new_act_der) { act_der_ = new_act_der; }
-
-    double get_output() const { return output_; }
+    double output() const { return output_; }
 
     void set_output(double new_output) { output_ = new_output; }
 
-    void add_in_weight(Index weight_id);
+    double act_der() const { return act_der_; }
 
-    unsigned int num_in_weights() const { return in_weights_.size(); }
+    void set_act_der(double new_act_der) { act_der_ = new_act_der; }
 
-    IndexVector::const_iterator in_weights_begin() const { return in_weights_.begin(); }
+    double error() const { return error_; }
 
-    IndexVector::const_iterator in_weights_end() const { return in_weights_.end(); }
+    void set_error(double new_error) { error_ = new_error; }
 
-    void add_out_weight(Index weight_id);
+    ActFunc *get_act_func() { return act_func_; }
 
-    unsigned int num_out_weights() const { return out_weights_.size(); }
+    void set_act_func(ActFunc *act_func) { act_func_ = act_func; }
 
-    IndexVector::const_iterator out_weights_begin() const { return out_weights_.begin(); }
+    const Edge *in_edge(size_t idx) const
+    {
+        assert(idx < in_edges_.size());
+        return in_edges_[idx];
+    }
 
-    IndexVector::const_iterator out_weights_end() const { return out_weights_.end(); }
+    Edge *in_edge(size_t idx)
+    {
+        assert(idx < in_edges_.size());
+        return in_edges_[idx];
+    }
 
-    unsigned int get_flag() const { return flag_; }
+    size_t num_in_edges() const { return in_edges_.size(); }
+
+    Edge *find_in_edge(Node *tail, Node *head);
+
+    void add_in_edge(Edge *e);
+
+    const Edge *out_edge(size_t idx) const
+    {
+        assert(idx < out_edges_.size());
+        return out_edges_[idx];
+    }
+
+    Edge *out_edge(size_t idx)
+    {
+        assert(idx < out_edges_.size());
+        return out_edges_[idx];
+    }
+
+    size_t num_out_edges() const { return out_edges_.size(); }
+
+    void add_out_edge(Edge *e);
+
+    Edge *find_out_edge(Node *tail, Node *head);
+
+    void feed_forward();
+
+    void back_prop();
 
 private:
     double act_;
-    double act_der_;
     double output_;
-    IndexVector in_weights_;
-    IndexVector out_weights_;
-    unsigned int flag_;
+    double act_der_;
+    double error_;
+    std::vector<Edge *> in_edges_;
+    std::vector<Edge *> out_edges_;
+    ActFunc *act_func_;
 };
 
 #endif

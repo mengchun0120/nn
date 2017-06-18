@@ -1,15 +1,18 @@
-#include <algorithm>
-#include <cassert>
+#include "node.hpp"
+#include "edge.hpp"
 #include "weight.hpp"
 
-void Weight::add_tail(Index node_id)
+void Weight::add_edge(Edge *e)
 {
-    assert(std::find(tails_.begin(), tails_.end(), node_id) == tails_.end());
-    tails_.push_back(node_id);
+    edges_.push_back(e);
 }
 
-void Weight::add_head(Index node_id)
+double Weight::cal_der()
 {
-    assert(std::find(heads_.begin(), heads_.end(), node_id) == heads_.end());
-    heads_.push_back(node_id);
+    der_ = 0.0;
+    for(auto it = edges_.begin(); it != edges_.end(); ++it) {
+        Edge *e = *it;
+        der_ += e->tail()->output() * e->head()->error();
+    }
+    return der_;
 }

@@ -1,20 +1,42 @@
 #include "neural_net.hpp"
 
-NeuralNet::NeuralNet(unsigned int num_inputs, unsigned int num_hiddens, unsigned int num_outputs, unsigned int num_weights):
-    num_inputs_(num_inputs),
-    num_hiddens_(num_hiddens),
-    num_outputs_(num_outputs),
-    nodes_(num_inputs + num_outputs + num_hiddens + 1),
-    weights_(num_weights)
+NeuralNet::NeuralNet():
+    input_start_(0),
+    input_size_(0),
+    output_start_(0),
+    output_size_(0)
 {
+
 }
 
-void NeuralNet::bind_weight(Index weight_id, Index tail_id, Index head_id)
+size_t NeuralNet::add_node(ActFunc *act_func)
 {
-    assert(tail_id < nodes_.size() && head_id < nodes_.size() && weight_id < weights_.size());
+    nodes_.emplace_back(act_func);
+    return nodes_.size() - 1;
+}
 
-    nodes_[tail_id].add_out_weight(weight_id);
-    nodes_[head_id].add_in_weight(weight_id);
-    weights_[weight_id].add_tail(tail_id);
-    weights_[weight_id].add_head(head_id);
+void NeuralNet::set_input(size_t input_start, size_t input_size)
+{
+    assert(input_start < nodes_.size() && input_start + input_size <= nodes_.size());
+    input_start_ = input_start;
+    input_size_ = input_size;
+}
+
+void NeuralNet::set_output(size_t output_start, size_t output_size)
+{
+    assert(output_start < nodes_.size() && output_start + output_size <= nodes_.size());
+    output_start_ = output_start;
+    output_size_ = output_size;
+}
+
+size_t NeuralNet::add_weight()
+{
+    weights_.emplace_back();
+    return weights_.size() - 1;
+}
+
+size_t NeuralNet::add_edge(size_t tail_idx, size_t head_idx, size_t weight_idx)
+{
+    edges_.emplace_back(node(tail_idx), node(head_idx), weight(weight_idx));
+    return edges_.size() - 1;
 }

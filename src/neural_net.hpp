@@ -3,84 +3,84 @@
 
 #include "node.hpp"
 #include "weight.hpp"
+#include "edge.hpp"
 #include <cassert>
+#include <cstddef>
 
 class NeuralNet {
 public:
-    NeuralNet(unsigned int num_inputs, unsigned int num_hiddens, unsigned int num_outputs, unsigned int num_weights);
+    NeuralNet();
 
     virtual ~NeuralNet() {}
 
-    void bind_weight(Index weight_id, Index tail_id, Index head_id);
+    size_t num_nodes() const { return nodes_.size(); }
 
-    const Node& get_node(Index node_id) const
+    const Node *node(size_t idx) const
     {
-        assert(node_id < nodes_.size());
-        return nodes_[node_id];
+        assert(idx < nodes_.size());
+        return &nodes_[idx];
     }
 
-    Node& get_node(Index node_id)
+    Node *node(size_t idx)
     {
-        assert(node_id < nodes_.size());
-        return nodes_[node_id];
+        assert(idx < nodes_.size());
+        return &nodes_[idx];
     }
 
-    unsigned int num_nodes() const { return nodes_.size(); }
+    size_t add_node(ActFunc *act_func=nullptr);
 
-    unsigned int num_inputs() const { return num_inputs_; }
+    void set_input(size_t input_start, size_t input_size);
 
-    unsigned int num_outputs() const { return num_outputs_; }
+    size_t input_start() const { return input_start_; }
 
-    std::vector<Node>::const_iterator input_begin() const { return nodes_.begin(); }
+    size_t input_size() const { return input_size_; }
 
-    std::vector<Node>::iterator input_begin() { return nodes_.begin(); }
+    void set_output(size_t output_start, size_t output_size);
 
-    std::vector<Node>::const_iterator input_end() const { return nodes_.begin() + num_inputs_; }
+    size_t output_start() const { return output_start_; }
 
-    std::vector<Node>::iterator input_end() { return nodes_.begin() + num_inputs_; }
+    size_t output_size() const { return output_size_; }
 
-    std::vector<Node>::iterator output_begin() { return nodes_.begin(); }
-
-    std::vector<Node>::const_iterator output_end() const { return nodes_.begin() + num_inputs_; }
-
-    std::vector<Node>::iterator output_end() { return nodes_.begin() + num_inputs_; }
-
-    std::vector<Node>::const_iterator nodes_begin() const { return nodes_.begin(); }
-
-    std::vector<Node>::iterator nodes_begin() { return nodes_.begin(); }
-
-    std::vector<Node>::const_iterator nodes_end() const { return nodes_.end(); }
-
-    std::vector<Node>::iterator nodes_end() { return nodes_.end(); }
-
-    const Weight& get_weight(Index weight_id) const
+    const Weight* weight(size_t idx) const
     {
-        assert(weight_id < weights_.size());
-        return weights_[weight_id];
+        assert(idx < weights_.size());
+        return &weights_[idx];
     }
 
-    Weight& get_weight(Index weight_id)
+    Weight *weight(size_t idx)
     {
-        assert(weight_id < weights_.size());
-        return weights_[weight_id];
+        assert(idx < weights_.size());
+        return &weights_[idx];
     }
 
-    unsigned int num_weights() const { return weights_.size(); }
+    size_t num_weights() const { return weights_.size(); }
 
-    std::vector<Weight>::const_iterator weights_begin() const { return weights_.begin(); }
+    size_t add_weight();
 
-    std::vector<Weight>::iterator weights_begin() { return weights_.begin(); }
+    const Edge *edge(size_t idx) const
+    {
+        assert(idx < edges_.size());
+        return &edges_[idx];
+    }
 
-    std::vector<Weight>::const_iterator weights_end() const { return weights_.end(); }
+    Edge *edge(size_t idx)
+    {
+        assert(idx < edges_.size());
+        return &edges_[idx];
+    }
 
-    std::vector<Weight>::iterator weights_end() { return weights_.end(); }
+    size_t add_edge(size_t tail_idx, size_t head_idx, size_t weight_idx);
+
+    size_t num_edges() const { return edges_.size(); }
 
 private:
-    unsigned int num_inputs_;
-    unsigned int num_hiddens_;
-    unsigned int num_outputs_;
     std::vector<Node> nodes_;
+    size_t input_start_;
+    size_t input_size_;
+    size_t output_start_;
+    size_t output_size_;
     std::vector<Weight> weights_;
+    std::vector<Edge> edges_;
 };
 
 #endif
