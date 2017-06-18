@@ -16,9 +16,11 @@
 #include <cassert>
 #include <cstddef>
 
+class OutputModel;
+
 class NeuralNet {
 public:
-    NeuralNet();
+    NeuralNet(OutputModel *output_model);
 
     virtual ~NeuralNet() {}
 
@@ -90,6 +92,7 @@ private:
     size_t output_size_;
     std::vector<Weight> weights_;
     std::vector<Edge> edges_;
+    OutputModel* output_model_;
 };
 
 #endif

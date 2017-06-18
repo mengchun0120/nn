@@ -1,11 +1,12 @@
-#include "node.hpp"
+#include "output_model.hpp"
 #include "neural_net.hpp"
 
-NeuralNet::NeuralNet():
+NeuralNet::NeuralNet(OutputModel *output_model):
     input_start_(0),
     input_size_(0),
     output_start_(0),
-    output_size_(0)
+    output_size_(0),
+    output_model_(output_model)
 {
 
 }
