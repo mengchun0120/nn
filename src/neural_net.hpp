@@ -1,9 +1,18 @@
 #ifndef __NEURAL_NET_HPP__
 #define __NEURAL_NET_HPP__
 
+#ifndef __NODE_HPP__
 #include "node.hpp"
+#endif
+
+#ifndef __WEIGHT_HPP__
 #include "weight.hpp"
+#endif
+
+#ifndef __EDGE_HPP__
 #include "edge.hpp"
+#endif
+
 #include <cassert>
 #include <cstddef>
 

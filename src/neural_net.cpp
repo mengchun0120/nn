@@ -1,3 +1,4 @@
+#include "node.hpp"
 #include "neural_net.hpp"
 
 NeuralNet::NeuralNet():

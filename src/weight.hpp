@@ -27,6 +27,8 @@ public:
 
     double der() const { return der_; }
 
+    void set_der(double new_value) { der_ = new_value; }
+
     double cal_der();
 
 private:

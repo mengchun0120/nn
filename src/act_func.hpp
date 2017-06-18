@@ -3,6 +3,8 @@
 
 class Node;
 
+typedef double (*NodeFunc)(Node *);
+
 class ActFunc {
     static ActFunc act_funcs[];
 
@@ -11,8 +13,6 @@ public:
         AF_RELINEAR,
         AF_TOTAL
     };
-
-    typedef double (*NodeFunc)(Node *);
 
     static ActFunc *get_act_func(ActFuncType type);
 

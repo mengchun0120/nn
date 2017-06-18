@@ -54,8 +54,6 @@ void Node::feed_forward()
     }
     if(act_func_) {
         output_ = act_func_->act(this);
-    } else {
-        output_ = act_;
     }
 }
 

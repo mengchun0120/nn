@@ -7,7 +7,7 @@ DEBUG_FLAGS=-g $(COMMON_FLAGS)
 RELEASE_FLAGS=-O3 $(COMMON_CFLAGS) -DGSL_RANGE_CHECK_OFF -DNDEBUG
 MAIN_TASK=$(BIN_DIR)/nn
 OBJS=$(BIN_DIR)/node.o $(BIN_DIR)/weight.o $(BIN_DIR)/edge.o \
-	 $(BIN_DIR)/act_func.o $(BIN_DIR)/output_func.o $(BIN_DIR)/neural_net.o
+	 $(BIN_DIR)/act_func.o $(BIN_DIR)/output_model.o $(BIN_DIR)/neural_net.o
 TEST_OBJS=
 
 debug: CPPFLAGS=$(DEBUG_FLAGS)
