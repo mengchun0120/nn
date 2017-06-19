@@ -13,7 +13,7 @@ OutputModel *OutputModel::get_output_model(OutputModelType type)
 }
 
 OutputModel::OutputModel(OutputProc output_proc, LossFunc loss_func,
-                         OutputErrorProc output_err_proc, const Param *param):
+                         OutputErrorProc output_err_proc, const Point *param):
     get_output_(output_proc),
     get_loss_(loss_func),
     get_output_error_(output_err_proc)
@@ -26,7 +26,7 @@ OutputModel::OutputModel(OutputProc output_proc, LossFunc loss_func,
 }
 
 
-void identity_output(NeuralNet *net, const Param *param)
+void identity_output(NeuralNet *net, const Point *param)
 {
     for(size_t i = net->output_start(), j = 0; j < net->output_size(); ++i, ++j) {
         Node *n = net->node(i);
@@ -34,7 +34,7 @@ void identity_output(NeuralNet *net, const Param *param)
     }
 }
 
-double square_loss(NeuralNet *net, const std::vector<double>& target, const Param *param)
+double square_loss(NeuralNet *net, const Point& target, const Point *param)
 {
     assert(net->output_size() == target.size());
     double loss = 0.0;
@@ -46,7 +46,7 @@ double square_loss(NeuralNet *net, const std::vector<double>& target, const Para
     return loss;
 }
 
-void square_loss_error(NeuralNet *net, const std::vector<double>& target, const Param *param)
+void square_loss_error(NeuralNet *net, const Point& target, const Point *param)
 {
     assert(net->output_size() == target.size());
     for(size_t i = net->output_start(), j = 0; j < net->output_size(); ++i, ++j) {

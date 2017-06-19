@@ -57,7 +57,7 @@ int main(int argc, const char *argv[])
     }
 
     // Test feed-forward.
-    double loss = net.feed_forward(input, target);
+    net.feed_forward(input);
 
     double expected_act1[2], expected_output1[2], expected_act2[2];
 
@@ -91,10 +91,6 @@ int main(int argc, const char *argv[])
     assert(expected_act2[1] == net.node(layer_start[2]+1)->act());
     assert(expected_act2[0] == net.node(layer_start[2])->output());
     assert(expected_act2[1] == net.node(layer_start[2]+1)->output());
-
-    double expected_loss = ((expected_act2[0] - target[0]) * (expected_act2[0] - target[0]) +
-                            (expected_act2[1] - target[1]) * (expected_act2[1] - target[1])) / 2.0;
-    assert(expected_loss == loss);
 
     net.back_prop(target);
 

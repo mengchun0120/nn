@@ -4,6 +4,7 @@
 #include <cassert>
 #include <cstddef>
 #include <deque>
+#include "types.hpp"
 #include "node.hpp"
 #include "weight.hpp"
 #include "edge.hpp"
@@ -98,11 +99,13 @@ public:
 
     void bind_edge(size_t edge_idx, size_t tail_idx, size_t head_idx, size_t weight_idx);
 
-    double feed_forward(const std::vector<double>& input, const std::vector<double>& target);
+    void feed_forward(const Point& input);
 
-    void back_prop(const std::vector<double>& target);
+    void back_prop(const Point& target);
 
     void add_gradient();
+
+    double loss(const Point& target);
 
 private:
     std::vector<Node> nodes_;
@@ -115,7 +118,7 @@ private:
     OutputModel* output_model_;
     std::deque<Node *> queue_;
 
-    void init_input(const std::vector<double>& input);
+    void init_input(const Point& input);
 
     void clear_node_flags();
 
@@ -123,13 +126,13 @@ private:
 
     void init_queue_feed_forward();
 
-    void init_feed_forward(const std::vector<double>& input);
+    void init_feed_forward(const Point& input);
 
     void add_in_nodes_to_queue(Node *n);
 
     void init_queue_back_prop();
 
-    void init_back_prop(const std::vector<double>& target);
+    void init_back_prop(const Point& target);
 };
 
 #endif

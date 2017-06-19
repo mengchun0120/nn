@@ -1,15 +1,13 @@
 #ifndef __OBJ_MODEL_HPP__
 #define __OBJ_MODEL_HPP__
 
-#include <vector>
+#include "types.hpp"
 
 class NeuralNet;
 
-typedef std::vector<double> Param;
-
-typedef void (*OutputProc)(NeuralNet *net, const Param *param);
-typedef double (*LossFunc)(NeuralNet *net, const std::vector<double>& target, const Param *param);
-typedef void (*OutputErrorProc)(NeuralNet *net, const std::vector<double>& target, const Param *param);
+typedef void (*OutputProc)(NeuralNet *net, const Point *param);
+typedef double (*LossFunc)(NeuralNet *net, const Point& target, const Point *param);
+typedef void (*OutputErrorProc)(NeuralNet *net, const Point& target, const Point *param);
 
 class OutputModel {
     static OutputModel output_models[];
@@ -21,7 +19,7 @@ public:
 
     static OutputModel *get_output_model(OutputModelType type);
 
-    OutputModel(OutputProc output_proc, LossFunc loss_func, OutputErrorProc output_err_proc, const Param *param=nullptr);
+    OutputModel(OutputProc output_proc, LossFunc loss_func, OutputErrorProc output_err_proc, const Point *param=nullptr);
 
 
     void get_output(NeuralNet *net)
@@ -29,12 +27,12 @@ public:
         get_output_(net, &param_);
     }
 
-    double get_loss(NeuralNet *net, const std::vector<double>& target)
+    double get_loss(NeuralNet *net, const Point& target)
     {
         return get_loss_(net, target, &param_);
     }
 
-    void get_output_error(NeuralNet *net, const std::vector<double>& target)
+    void get_output_error(NeuralNet *net, const Point& target)
     {
         return get_output_error_(net, target, &param_);
     }
@@ -43,13 +41,13 @@ private:
     OutputProc get_output_;
     LossFunc get_loss_;
     OutputErrorProc get_output_error_;
-    Param param_;
+    Point param_;
 };
 
-void identity_output(NeuralNet *net, const Param *param);
+void identity_output(NeuralNet *net, const Point *param);
 
-double square_loss(NeuralNet *net, const std::vector<double>& target, const Param *param);
+double square_loss(NeuralNet *net, const Point& target, const Point *param);
 
-void square_loss_error(NeuralNet *net, const std::vector<double>& target, const Param *param);
+void square_loss_error(NeuralNet *net, const Point& target, const Point *param);
 
 #endif

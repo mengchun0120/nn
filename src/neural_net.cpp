@@ -47,7 +47,7 @@ void NeuralNet::bind_edge(size_t edge_idx, size_t tail_idx, size_t head_idx, siz
     w->add_edge(e);
 }
 
-void NeuralNet::init_input(const std::vector<double>& input)
+void NeuralNet::init_input(const Point& input)
 {
     assert(input.size() == input_size_);
     for(size_t i = input_start_, j = 0; j < input_size_; ++i, ++j) {
@@ -81,14 +81,14 @@ void NeuralNet::init_queue_feed_forward()
     }
 }
 
-void NeuralNet::init_feed_forward(const std::vector<double>& input)
+void NeuralNet::init_feed_forward(const Point& input)
 {
     init_input(input);
     clear_node_flags();
     init_queue_feed_forward();
 }
 
-double NeuralNet::feed_forward(const std::vector<double>& input, const std::vector<double>& target)
+void NeuralNet::feed_forward(const Point& input)
 {
     init_feed_forward(input);
     while(!queue_.empty()) {
@@ -101,10 +101,11 @@ double NeuralNet::feed_forward(const std::vector<double>& input, const std::vect
     }
 
     output_model_->get_output(this);
+}
 
-    double loss = output_model_->get_loss(this, target);
-
-    return loss;
+double NeuralNet::loss(const Point& target)
+{
+    return output_model_->get_loss(this, target);
 }
 
 void NeuralNet::add_in_nodes_to_queue(Node *n)
@@ -125,13 +126,13 @@ void NeuralNet::init_queue_back_prop()
     }
 }
 
-void NeuralNet::init_back_prop(const std::vector<double>& target)
+void NeuralNet::init_back_prop(const Point& target)
 {
     output_model_->get_output_error(this, target);
     init_queue_back_prop();
 }
 
-void NeuralNet::back_prop(const std::vector<double>& target)
+void NeuralNet::back_prop(const Point& target)
 {
     init_back_prop(target);
     while(!queue_.empty()) {
