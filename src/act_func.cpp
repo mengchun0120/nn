@@ -14,10 +14,10 @@ ActFunc *ActFunc::get_act_func(ActFuncType type)
 
 double relinear(Node *n)
 {
-    return (n->output() > 0.0) ? n->output() : 0.0;
+    return (n->act() > 0.0) ? n->act() : 0.0;
 }
 
 double relinear_der(Node *n)
 {
-    return (n->output() >= 0.0) ? 1.0 : 0.0;
+    return (n->act() >= 0.0) ? 1.0 : 0.0;
 }

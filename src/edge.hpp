@@ -10,23 +10,50 @@ public:
 
     virtual ~Edge() {}
 
-    Node *tail() { return tail_; }
+    const Node *tail() const
+    {
+        return tail_;
+    }
 
-    const Node *tail() const { return tail_; }
+    Node *tail()
+    {
+        return tail_;
+    }
 
-    void set_tail(Node *t) { tail_ = t; }
+    void set_tail(Node *t)
+    {
+        tail_ = t;
+    }
 
-    Node *head() { return head_; }
+    Node *head()
+    {
+        return head_;
+    }
 
-    const Node *head() const { return head_; }
+    const Node *head() const
+    {
+        return head_;
+    }
 
-    void set_head(Node *h) { head_ = h; }
+    void set_head(Node *h)
+    {
+        head_ = h;
+    }
 
-    Weight *weight() { return weight_; }
+    Weight *weight()
+    {
+        return weight_;
+    }
 
-    const Weight *weight() const { return weight_; }
+    const Weight *weight() const
+    {
+        return weight_;
+    }
 
-    void set_weight(Weight *w) { weight_ = w; }
+    void set_weight(Weight *w)
+    {
+        weight_ = w;
+    }
 
 protected:
     Node *tail_, *head_;

@@ -1,35 +1,65 @@
 #ifndef __WEIGHT_HPP__
 #define __WEIGHT_HPP__
 
+#include <cassert>
+#include <cstddef>
 #include <vector>
 
 class Edge;
 
 class Weight {
 public:
-    Weight(): value_(0.0), der_(0.0) {}
+    Weight():
+        value_(0.0),
+        der_(0.0)
+    {}
 
-    virtual ~Weight() {}
+    virtual ~Weight()
+    {}
 
-    double value() const { return value_; }
+    double value() const
+    {
+        return value_;
+    }
 
-    void set_value(double new_value) { value_ = new_value; }
+    void set_value(double new_value)
+    {
+        value_ = new_value;
+    }
 
-    std::vector<Edge *>::const_iterator edges_begin() const { return edges_.begin(); }
+    double der() const
+    {
+        return der_;
+    }
 
-    std::vector<Edge *>::iterator edges_begin() { return edges_.begin(); }
-
-    std::vector<Edge *>::const_iterator edges_end() const { return edges_.end(); }
-
-    std::vector<Edge *>::iterator edges_end() { return edges_.end(); }
-
-    void add_edge(Edge *e);
-
-    double der() const { return der_; }
-
-    void set_der(double new_value) { der_ = new_value; }
+    void set_der(double new_value)
+    {
+        der_ = new_value;
+    }
 
     double cal_der();
+
+    void add_edge(Edge *e)
+    {
+        edges_.push_back(e);
+    }
+
+    const Edge *edge(size_t idx) const
+    {
+        assert(idx < edges_.size());
+        return edges_[idx];
+    }
+
+    Edge *edge(size_t idx)
+    {
+        assert(idx < edges_.size());
+        return edges_[idx];
+    }
+
+    size_t num_edges() const
+    {
+        return edges_.size();
+    }
 
 private:
     double value_;
