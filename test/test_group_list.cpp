@@ -1,6 +1,5 @@
 #include <cassert>
 #include <vector>
-#include <iostream>
 #include "group_list.hpp"
 
 using namespace std;

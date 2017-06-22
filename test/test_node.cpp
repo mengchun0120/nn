@@ -3,7 +3,6 @@
 #include "weight.hpp"
 #include "edge.hpp"
 #include "node.hpp"
-#include <iostream>
 
 using namespace std;
 
