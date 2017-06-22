@@ -1,53 +1,45 @@
 #ifndef __OBJ_MODEL_HPP__
 #define __OBJ_MODEL_HPP__
 
-#include "types.hpp"
+#include <functional>
+#include "neural_net.hpp"
 
-class NeuralNet;
+typedef std::function<void(NodeIterPair)> OutputProc;
+typedef std::function<double(NodeIterPair, const Point&)> LossFunc;
+typedef std::function<void(NodeIterPair, const Point&)> OutputErrorProc;
 
-typedef void (*OutputProc)(NeuralNet *net, const Point *param);
-typedef double (*LossFunc)(NeuralNet *net, const Point& target, const Point *param);
-typedef void (*OutputErrorProc)(NeuralNet *net, const Point& target, const Point *param);
-
-class OutputModel {
-    static OutputModel output_models[];
+class IdentityOutputProc {
 public:
-    enum OutputModelType {
-        OM_REGRESSION_SQUARE_LOSS,     //0
-        OM_COUNT
-    };
-
-    static OutputModel *get_output_model(OutputModelType type);
-
-    OutputModel(OutputProc output_proc, LossFunc loss_func, OutputErrorProc output_err_proc, const Point *param=nullptr);
-
-
-    void get_output(NeuralNet *net)
-    {
-        get_output_(net, &param_);
-    }
-
-    double get_loss(NeuralNet *net, const Point& target)
-    {
-        return get_loss_(net, target, &param_);
-    }
-
-    void get_output_error(NeuralNet *net, const Point& target)
-    {
-        return get_output_error_(net, target, &param_);
-    }
-
-private:
-    OutputProc get_output_;
-    LossFunc get_loss_;
-    OutputErrorProc get_output_error_;
-    Point param_;
+    void operator()(NodeIterPair output_iter_pair);
 };
 
-void identity_output(NeuralNet *net, const Point *param);
+class SquareLossFunc {
+public:
+    double operator()(NodeIterPair output_iter_pair, const Point& target);
+};
 
-double square_loss(NeuralNet *net, const Point& target, const Point *param);
+class SquareLossErrorProc {
+public:
+    void operator()(NodeIterPair output_iter_pair, const Point& target);
+};
 
-void square_loss_error(NeuralNet *net, const Point& target, const Point *param);
+class OutputModel {
+public:
+    static OutputModel square_loss_regression_model()
+    {
+        return OutputModel(IdentityOutputProc(), SquareLossFunc(), SquareLossErrorProc());
+    }
+
+    OutputModel(OutputProc output_proc, LossFunc loss_func, OutputErrorProc output_err_proc)
+    {
+        this->output_proc = output_proc;
+        this->loss_func = loss_func;
+        this->output_err_proc = output_err_proc;
+    }
+
+    OutputProc output_proc;
+    LossFunc loss_func;
+    OutputErrorProc output_err_proc;
+};
 
 #endif

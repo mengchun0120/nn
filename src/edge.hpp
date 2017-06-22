@@ -6,7 +6,11 @@ class Weight;
 
 class Edge {
 public:
-    Edge(Node *tail=nullptr, Node *head=nullptr, Weight *weight=nullptr);
+    Edge(Node *tail=nullptr, Node *head=nullptr, Weight *weight=nullptr):
+        tail_(tail),
+        head_(head),
+        weight_(weight)
+    {}
 
     virtual ~Edge() {}
 

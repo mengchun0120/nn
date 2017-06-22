@@ -8,42 +8,29 @@
 #include "node.hpp"
 #include "weight.hpp"
 #include "edge.hpp"
+#include "group_list.hpp"
+
+typedef GroupList<Node>::GroupIterator NodeGroupIter;
+typedef GroupList<Node>::ItemIterPair NodeIterPair;
+typedef GroupList<Edge>::GroupIterator EdgeGroupIter;
+typedef GroupList<Edge>::ItemIterPair EdgeIterPair;
+typedef GroupList<Weight>::GroupIterator WeightGroupIter;
+typedef GroupList<Weight>::ItemIterPair WeightIterPair;
 
 class OutputModel;
 
 class NeuralNet {
-    enum Stage {
-        STAGE_FEED_FORWARD = 1,
-        STAGE_BACK_PROP
-    };
 public:
-    NeuralNet(size_t num_nodes, size_t num_edges, size_t num_weights, OutputModel *output_model);
+    NeuralNet(OutputModel * output_model);
 
     virtual ~NeuralNet()
     {}
 
-    size_t num_nodes() const
-    {
-        return nodes_.size();
-    }
+    NodeIterPair add_inputs(size_t num_inputs);
 
-    const Node *node(size_t idx) const
+    NodeIterPair get_inputs()
     {
-        assert(idx < nodes_.size());
-        return &nodes_[idx];
-    }
-
-    Node *node(size_t idx)
-    {
-        assert(idx < nodes_.size());
-        return &nodes_[idx];
-    }
-
-    void set_input(size_t input_start, size_t input_size);
-
-    size_t input_start() const
-    {
-        return input_start_;
+        return input_iter_pair_;
     }
 
     size_t input_size() const
@@ -51,11 +38,11 @@ public:
         return input_size_;
     }
 
-    void set_output(size_t output_start, size_t output_size);
+    NodeIterPair add_outputs(size_t num_outputs);
 
-    size_t output_start() const
+    NodeIterPair get_outputs()
     {
-        return output_start_;
+        return output_iter_pair_;
     }
 
     size_t output_size() const
@@ -63,41 +50,59 @@ public:
         return output_size_;
     }
 
-    const Weight* weight(size_t idx) const
+    NodeIterPair add_biases(size_t num_biases);
+
+    size_t num_biases() const
     {
-        assert(idx < weights_.size());
-        return &weights_[idx];
+        return num_biases_;
     }
 
-    Weight *weight(size_t idx)
+    NodeIterPair add_hiddens(size_t num_hiddens, ActFunc *act_func);
+
+    size_t num_hiddens() const
     {
-        assert(idx < weights_.size());
-        return &weights_[idx];
+        return num_hiddens_;
     }
 
-    size_t num_weights() const
+    size_t num_nodes() const
     {
-        return weights_.size();
+        return node_groups_.num_items();
     }
 
-    const Edge *edge(size_t idx) const
+    NodeGroupIter node_group_begin()
     {
-        assert(idx < edges_.size());
-        return &edges_[idx];
+        return node_groups_.begin();
     }
 
-    Edge *edge(size_t idx)
+    WeightIterPair add_weights(size_t num_weights);
+
+    WeightGroupIter weight_group_begin()
     {
-        assert(idx < edges_.size());
-        return &edges_[idx];
+        return weight_groups_.begin();
     }
 
-    size_t num_edges() const
+    EdgeIterPair add_edges(size_t num_edges);
+
+    EdgeGroupIter edge_group_begin()
     {
-        return edges_.size();
+        return edge_groups_.begin();
     }
 
-    void bind_edge(size_t edge_idx, size_t tail_idx, size_t head_idx, size_t weight_idx);
+    EdgeIterPair link(Node *tail, Node *head);
+
+    EdgeIterPair link(Node *tail, Node *head, Weight *weight);
+
+    EdgeIterPair link(Node *tail, NodeIterPair heads);
+
+    EdgeIterPair link(Node *tail, NodeIterPair heads, WeightIterPair weights);
+
+    EdgeIterPair link(NodeIterPair tails, NodeIterPair heads);
+
+    EdgeIterPair link(NodeIterPair tails, NodeIterPair heads, WeightIterPair weights);
+
+    EdgeIterPair link(NodeIterPair tails, Node *head);
+
+    EdgeIterPair link(NodeIterPair tails, Node *head, WeightIterPair weights);
 
     void feed_forward(const Point& input);
 
@@ -105,18 +110,21 @@ public:
 
     void add_gradient();
 
-    double loss(const Point& target);
-
 private:
-    std::vector<Node> nodes_;
-    std::vector<Weight> weights_;
-    std::vector<Edge> edges_;
-    size_t input_start_;
+    GroupList<Node> node_groups_;
     size_t input_size_;
-    size_t output_start_;
+    NodeIterPair input_iter_pair_;
     size_t output_size_;
-    OutputModel* output_model_;
+    NodeIterPair output_iter_pair_;
+    size_t num_biases_;
+    size_t num_hiddens_;
+
+    GroupList<Edge> edge_groups_;
+    GroupList<Weight> weight_groups_;
+
     std::deque<Node *> queue_;
+
+    OutputModel *output_model_;
 
     void init_input(const Point& input);
 

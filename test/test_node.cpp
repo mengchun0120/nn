@@ -12,7 +12,8 @@ int main(int argc, const char *argv[])
     Node in_nodes[3], out_nodes[3];
     Weight in_weights[3], out_weights[3];
     Edge in_edges[3], out_edges[3];
-    Node n(ActFunc::get_act_func(ActFunc::AF_RELINEAR));
+    ActFunc act_func = ActFunc::relinear_act_func();
+    Node n(&act_func);
     size_t i;
 
     for(i = 0; i < 3; ++i) {
@@ -30,6 +31,7 @@ int main(int argc, const char *argv[])
     double weights1[] = {1.2, -2.6, 10.0};
     double input1[] = {2.6, 3.4, 23.0};
     double expected_act = weights1[0] * input1[0] + weights1[1] * input1[1] + weights1[2] * input1[2];
+    double expected_output = expected_act;
 
     for(i = 0; i < 3; ++i) {
         in_weights[i].set_value(weights1[i]);
@@ -37,7 +39,8 @@ int main(int argc, const char *argv[])
     }
 
     n.feed_forward();
-    assert(n.act() == expected_act && n.output() == expected_act);
+    assert(n.act() == expected_act && n.output() == expected_act &&
+           n.output() == expected_output);
 
     double weights2[] = {1.3, -2.5, 2.6};
     double errors[] = {3.3, 2.57, 3.75};

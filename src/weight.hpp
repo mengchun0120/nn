@@ -61,6 +61,11 @@ public:
         return edges_.size();
     }
 
+    void cal_add_der()
+    {
+        der_ += cal_der();
+    }
+
 private:
     double value_;
     double der_;

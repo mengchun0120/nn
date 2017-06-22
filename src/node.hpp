@@ -10,6 +10,11 @@ class ActFunc;
 
 class Node {
 public:
+    enum NodeFlag {
+        FLAG_VISITED_FEED_FORWARD = 0x01,
+        FLAG_VISITED_BACK_PROP = 0x02
+    };
+
     Node(ActFunc *act_func=nullptr):
         act_(0),
         output_(0),
@@ -109,12 +114,22 @@ public:
         return flag_;
     }
 
-    void set_flag(int new_flag)
+    void set_flag(NodeFlag flag)
     {
-        flag_ = new_flag;
+        flag_ |= flag;
     }
 
-    void clear_flag()
+    bool test_flag(NodeFlag flag)
+    {
+        return (flag_ & flag);
+    }
+
+    void clear_flag(NodeFlag flag)
+    {
+        flag_ &= ~flag;
+    }
+
+    void zero_flag()
     {
         flag_ = 0;
     }

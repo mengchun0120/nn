@@ -1,28 +1,34 @@
 #ifndef __ACT_FUNC_HPP__
 #define __ACT_FUNC_HPP__
 
+#include <functional>
+
 class Node;
+typedef std::function<double(Node *)> ActivationFunc;
 
-typedef double (*NodeFunc)(Node *);
-
-class ActFunc {
-    static ActFunc act_funcs[];
-
+class RelinearActivation {
 public:
-    enum ActFuncType {
-        AF_RELINEAR,
-        AF_TOTAL
-    };
-
-    static ActFunc *get_act_func(ActFuncType type);
-
-    ActFunc(NodeFunc a, NodeFunc ad): act(a), act_der(ad) {}
-
-    NodeFunc act;
-    NodeFunc act_der;
+    double operator()(Node *n);
 };
 
-double relinear(Node *n);
-double relinear_der(Node *n);
+class RelinearDerivative {
+public:
+    double operator()(Node *n);
+};
+
+class ActFunc {
+public:
+    static ActFunc relinear_act_func()
+    {
+        return ActFunc(RelinearActivation(), RelinearDerivative());
+    }
+
+    ActFunc(ActivationFunc a, ActivationFunc ad):
+        act(a), act_der(ad)
+    {}
+
+    ActivationFunc act;
+    ActivationFunc act_der;
+};
 
 #endif
