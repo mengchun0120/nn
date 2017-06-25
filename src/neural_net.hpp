@@ -158,7 +158,22 @@ public:
 
     void add_gradient();
 
-//private:
+    void foreach_node(std::function<void(Node&)> f)
+    {
+        node_groups_.foreach(f);
+    }
+
+    void foreach_edge(std::function<void(Edge&)> f)
+    {
+        edge_groups_.foreach(f);
+    }
+
+    void foreach_weight(std::function<void(Weight&)> f)
+    {
+        weight_groups_.foreach(f);
+    }
+
+private:
     GroupList<Node> node_groups_;
     Group<Node> *inputs_;
     Group<Node> *outputs_;

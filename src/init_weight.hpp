@@ -4,39 +4,50 @@
 #include <functional>
 #include <random>
 
-typedef std::functional<void()> WeightInitializer;
+class WeightInitializer {
+public:
+    WeightInitializer():
+        rd_(),
+        gen_(rd_())
+    {}
 
-class UniformRandomWeightInitializer {
+    void seed()
+    {
+        gen_.seed(rd_());
+    }
+
+protected:
+    std::random_device rd_;
+    std::mt19937 gen_;
+};
+
+class UniformRandomWeightInitializer: public WeightInitializer {
 public:
     UniformRandomWeightInitializer(double min, double max):
-        gen_(std::random_device()),
         dis_(min, max)
     {}
 
-    void operator()()
+    double operator()()
     {
         return dis_(gen_);
     }
 
 private:
-    std::mt19937 gen_;
     std::uniform_real_distribution<> dis_;
 };
 
-class NormalRandomWeightInitializer {
+class NormalRandomWeightInitializer: public WeightInitializer {
 public:
     NormalRandomWeightInitializer(double mean, double stddev):
-        gen_(std::random_device()),
         dis_(mean, stddev)
     {}
 
-    void operator()()
+    double operator()()
     {
         return dis_(gen_);
     }
 
 private:
-    std::mt19937 gen_;
     std::normal_distribution<> dis_;
 };
 

@@ -9,7 +9,7 @@ RELEASE_FLAGS=-O3 $(COMMON_FLAGS) -DNDEBUG
 MAIN_TASK=$(BIN_DIR)/libnn.so
 OBJS=$(BIN_DIR)/group.o $(BIN_DIR)/group_list.o $(BIN_DIR)/weight.o $(BIN_DIR)/types.o \
 	 $(BIN_DIR)/act_func.o $(BIN_DIR)/node.o $(BIN_DIR)/edge.o $(BIN_DIR)/output_model.o \
-	 $(BIN_DIR)/neural_net.o
+	 $(BIN_DIR)/neural_net.o $(BIN_DIR)/init_weight.o $(BIN_DIR)/eval.o
 TEST_OBJS=$(TESTBIN_DIR)/test_group_list $(TESTBIN_DIR)/test_node $(TESTBIN_DIR)/test_neural_net
 
 debug: CPPFLAGS=$(DEBUG_FLAGS)

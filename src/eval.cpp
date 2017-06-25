@@ -3,24 +3,22 @@
 #include <cstddef>
 #include "neural_net.hpp"
 #include "eval.hpp"
-#include "utils.hpp"
 
-double MeanEuclidDistEvaluateFunc::operator()(NeuralNet *net, const DataSet& inputs, const DataSet& targets)
+double EuclidDistEvaluateFunc::operator()(NeuralNet *net, const DataSet& inputs, const DataSet& targets)
 {
-    assert(inputs.size() == targets.size() && inputs.size() > 0);
+    assert(net && inputs.size() == targets.size() && inputs.size() > 0);
 
     double total_dist = 0.0;
-    NodeIterPair output_iter_pair = net->get_outputs();
+    Group<Node>& outputs = net->get_outputs();
 
     for(size_t i = 0; i < inputs.size(); ++i) {
         net->feed_forward(inputs[i]);
 
         double dist = 0.0;
-        const Point& target = targets[i];
-        auto output_it = output_iter_pair.first;
+        auto output_it = outputs.begin();
         auto target_it = targets[i].begin();
 
-        for(; output_it != output_iter_pair.second; ++output_it, ++target_it) {
+        for(; output_it != outputs.end(); ++output_it, ++target_it) {
             double d = output_it->output() - *target_it;
             dist += d * d;
         }
