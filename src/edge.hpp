@@ -59,6 +59,8 @@ public:
         weight_ = w;
     }
 
+    void cal_add_der();
+
 protected:
     Node *tail_, *head_;
     Weight *weight_;

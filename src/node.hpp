@@ -10,6 +10,9 @@ class ActFunc;
 
 class Node {
 public:
+    typedef std::vector<Edge *>::iterator EdgeIterator;
+    typedef std::vector<Edge *>::const_iterator ConstEdgeIterator;
+
     enum NodeFlag {
         FLAG_VISITED_FEED_FORWARD = 0x01,
         FLAG_VISITED_BACK_PROP = 0x02
@@ -77,6 +80,26 @@ public:
         return in_edges_[idx];
     }
 
+    EdgeIterator in_edge_begin()
+    {
+        return in_edges_.begin();
+    }
+
+    ConstEdgeIterator in_edges_begin() const
+    {
+        return in_edges_.begin();
+    }
+
+    EdgeIterator in_edge_end()
+    {
+        return in_edges_.end();
+    }
+
+    ConstEdgeIterator in_edges_end() const
+    {
+        return in_edges_.end();
+    }
+
     size_t num_in_edges() const
     {
         return in_edges_.size();
@@ -97,6 +120,26 @@ public:
     {
         assert(idx < out_edges_.size());
         return out_edges_[idx];
+    }
+
+    EdgeIterator out_edge_begin()
+    {
+        return out_edges_.begin();
+    }
+
+    ConstEdgeIterator out_edges_begin() const
+    {
+        return out_edges_.begin();
+    }
+
+    EdgeIterator out_edge_end()
+    {
+        return out_edges_.end();
+    }
+
+    ConstEdgeIterator out_edges_end() const
+    {
+        return out_edges_.end();
     }
 
     size_t num_out_edges() const

@@ -2,48 +2,15 @@
 #define __GROUP_LIST_HPP__
 
 #include <cstddef>
-#include <vector>
 #include <list>
-#include <utility>
 #include <functional>
+#include "group.hpp"
 
 template <typename T>
 class GroupList {
-    friend class GroupIterator;
-
 public:
-    typedef typename std::vector<T> Group;
-    typedef typename std::list<Group> Groups;
-    typedef typename Group::iterator ItemIterator;
-    typedef typename std::pair<ItemIterator, ItemIterator> ItemIterPair;
-
-    class GroupIterator {
-        friend class GroupList;
-    public:
-        bool reach_end()
-        {
-            return iter_ == end_;
-        }
-
-        void next()
-        {
-            assert(iter_ != end_);
-            ++iter_;
-        }
-
-        ItemIterPair bound()
-        {
-            return ItemIterPair(iter_->begin(), iter_->end());
-        }
-
-    private:
-        GroupIterator(GroupList& gl):
-            iter_(gl.groups_.begin()), end_(gl.groups_.end())
-        {}
-
-        typename Groups::iterator iter_;
-        typename Groups::iterator end_;
-    };
+    typedef typename std::list<Group<T>>::iterator Iterator;
+    typedef typename std::list<Group<T>>::const_iterator ConstIterator;
 
     GroupList():
         num_items_(0)
@@ -52,35 +19,49 @@ public:
     virtual ~GroupList()
     {}
 
-    ItemIterPair add(size_t num_items)
-    {
-        groups_.emplace_back(num_items);
-        num_items_ += num_items;
-        return ItemIterPair(groups_.back().begin(), groups_.back().end());
-    }
-
     size_t num_items() const
     {
         return num_items_;
     }
 
-    GroupIterator begin()
+    Group<T>& add(size_t size)
     {
-        return GroupIterator(*this);
+        groups_.emplace_back(size);
+        num_items_ += size;
+        return groups_.back();
+    }
+
+    Iterator begin()
+    {
+        return groups_.begin();
+    }
+
+    ConstIterator begin() const
+    {
+        return groups_.begin();
+    }
+
+    Iterator end()
+    {
+        return groups_.end();
+    }
+
+    ConstIterator end() const
+    {
+        return groups_.end();
     }
 
     void foreach(std::function<void(T&)> f)
     {
-        for(GroupIterator it(*this); !it.reach_end(); it.next()) {
-            ItemIterPair iter_pair = it.bound();
-            for(auto i = iter_pair.first; i != iter_pair.second; ++i) {
-                f(*i);
+        for(auto it = begin(); it != end(); ++it) {
+            for(auto it1 = it->begin(); it1 != it->end(); ++it1) {
+                f(*it1);
             }
         }
     }
 
-//protected:
-    Groups groups_;
+protected:
+    std::list<Group<T>> groups_;
     size_t num_items_;
 };
 

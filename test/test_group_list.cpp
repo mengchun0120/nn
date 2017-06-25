@@ -8,26 +8,21 @@ int main(int argc, const char *argv[])
 {
     GroupList<int> glist;
     vector<int> arr{0, 1, 2, 3, 4};
-    unsigned int i = 0;
+    unsigned int i;
 
-    auto it_pair1 = glist.add(3);
-    assert(it_pair1.second - it_pair1.first == 3 && glist.num_items() == 3);
-    for(auto it = it_pair1.first; it != it_pair1.second; ++it, ++i) {
-        *it = arr[i];
+    Group<int>& g1 = glist.add(3);
+    auto it1 = g1.begin();
+    for(i = 0; i < 3; ++i, ++it1) {
+        *it1 = arr[i];
     }
+    assert(g1.size() == 3 && glist.num_items() == 3);
 
-    auto it_pair2 = glist.add(2);
-    assert(it_pair2.second - it_pair2.first == 2 && glist.num_items() == 5);
-    for(auto it = it_pair2.first; it != it_pair2.second; ++it, ++i) {
-        *it = arr[i];
+    Group<int>& g2 = glist.add(2);
+    auto it2 = g2.begin();
+    for(; i < 5; ++i, ++it2) {
+        *it2 = arr[i];
     }
-
-    auto git = glist.begin();
-    assert(!git.reach_end() && git.bound() == it_pair1);
-    git.next();
-    assert(!git.reach_end() && git.bound() == it_pair2);
-    git.next();
-    assert(git.reach_end());
+    assert(g2.size() == 2 && glist.num_items() == 5);
 
     vector<int> arr1;
     auto get_items = [&](int& i){ arr1.push_back(i); };

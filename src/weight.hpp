@@ -2,10 +2,6 @@
 #define __WEIGHT_HPP__
 
 #include <cassert>
-#include <cstddef>
-#include <vector>
-
-class Edge;
 
 class Weight {
 public:
@@ -37,39 +33,14 @@ public:
         der_ = new_value;
     }
 
-    double cal_der();
-
-    void add_edge(Edge *e)
+    void add_der(double v)
     {
-        edges_.push_back(e);
-    }
-
-    const Edge *edge(size_t idx) const
-    {
-        assert(idx < edges_.size());
-        return edges_[idx];
-    }
-
-    Edge *edge(size_t idx)
-    {
-        assert(idx < edges_.size());
-        return edges_[idx];
-    }
-
-    size_t num_edges() const
-    {
-        return edges_.size();
-    }
-
-    void cal_add_der()
-    {
-        der_ += cal_der();
+        der_ += v;
     }
 
 private:
     double value_;
     double der_;
-    std::vector<Edge *> edges_;
 };
 
 #endif

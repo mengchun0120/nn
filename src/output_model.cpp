@@ -2,21 +2,21 @@
 #include "neural_net.hpp"
 #include "output_model.hpp"
 
-void IdentityOutputProc::operator()(NodeIterPair output_iter_pair)
+void IdentityOutputProc::operator()(Group<Node>::Range outputs)
 {
-    for(auto it = output_iter_pair.first; it != output_iter_pair.second; ++it) {
+    for(auto it = outputs.first; it != outputs.second; ++it) {
         it->set_output(it->act());
     }
 }
 
-double SquareLossFunc::operator()(NodeIterPair output_iter_pair, const Point& target)
+double SquareLossFunc::operator()(Group<Node>::Range outputs, const Point& target)
 {
-    assert(output_iter_pair.second - output_iter_pair.first == static_cast<int>(target.size()));
+    assert(Group<Node>::size(outputs) == target.size());
 
     double loss = 0.0;
     size_t i = 0;
 
-    for(auto it = output_iter_pair.first; it != output_iter_pair.second; ++it, ++i) {
+    for(auto it = outputs.first; it != outputs.second; ++it, ++i) {
         double dist = it->output() - target[i];
         loss += dist * dist;
     }
@@ -25,13 +25,13 @@ double SquareLossFunc::operator()(NodeIterPair output_iter_pair, const Point& ta
     return loss;
 }
 
-void SquareLossErrorProc::operator()(NodeIterPair output_iter_pair, const Point& target)
+void SquareLossErrorProc::operator()(Group<Node>::Range outputs, const Point& target)
 {
-    assert(output_iter_pair.second - output_iter_pair.first == static_cast<int>(target.size()));
+    assert(Group<Node>::size(outputs) == target.size());
 
     size_t i = 0;
 
-    for(auto it = output_iter_pair.first; it != output_iter_pair.second; ++it, ++i) {
+    for(auto it = outputs.first; it != outputs.second; ++it, ++i) {
         it->set_error(it->act() - target[i]);
     }
 }

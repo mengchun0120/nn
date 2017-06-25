@@ -10,13 +10,6 @@
 #include "edge.hpp"
 #include "group_list.hpp"
 
-typedef GroupList<Node>::GroupIterator NodeGroupIter;
-typedef GroupList<Node>::ItemIterPair NodeIterPair;
-typedef GroupList<Edge>::GroupIterator EdgeGroupIter;
-typedef GroupList<Edge>::ItemIterPair EdgeIterPair;
-typedef GroupList<Weight>::GroupIterator WeightGroupIter;
-typedef GroupList<Weight>::ItemIterPair WeightIterPair;
-
 class OutputModel;
 
 class NeuralNet {
@@ -26,38 +19,38 @@ public:
     virtual ~NeuralNet()
     {}
 
-    NodeIterPair add_inputs(size_t num_inputs);
+    Group<Node>& add_inputs(size_t num_inputs);
 
-    NodeIterPair get_inputs()
+    Group<Node>& get_inputs()
     {
-        return input_iter_pair_;
+        return *inputs_;
     }
 
     size_t input_size() const
     {
-        return input_size_;
+        return inputs_->size();
     }
 
-    NodeIterPair add_outputs(size_t num_outputs);
+    Group<Node>& add_outputs(size_t num_outputs);
 
-    NodeIterPair get_outputs()
+    Group<Node>& get_outputs()
     {
-        return output_iter_pair_;
+        return *outputs_;
     }
 
     size_t output_size() const
     {
-        return output_size_;
+        return outputs_->size();
     }
 
-    NodeIterPair add_biases(size_t num_biases);
+    Group<Node>& add_biases(size_t num_biases);
 
     size_t num_biases() const
     {
         return num_biases_;
     }
 
-    NodeIterPair add_hiddens(size_t num_hiddens, ActFunc *act_func);
+    Group<Node>& add_hiddens(size_t num_hiddens, ActFunc *act_func);
 
     size_t num_hiddens() const
     {
@@ -69,40 +62,95 @@ public:
         return node_groups_.num_items();
     }
 
-    NodeGroupIter node_group_begin()
+    GroupList<Node>::Iterator node_group_begin()
     {
         return node_groups_.begin();
     }
 
-    WeightIterPair add_weights(size_t num_weights);
+    GroupList<Node>::ConstIterator node_group_begin() const
+    {
+        return node_groups_.begin();
+    }
 
-    WeightGroupIter weight_group_begin()
+    GroupList<Node>::Iterator node_group_end()
+    {
+        return node_groups_.end();
+    }
+
+    GroupList<Node>::ConstIterator node_group_end() const
+    {
+        return node_groups_.end();
+    }
+
+    Group<Weight>& add_weights(size_t num_weights);
+
+    size_t num_weights() const
+    {
+        return weight_groups_.num_items();
+    }
+
+    GroupList<Weight>::Iterator weight_group_begin()
     {
         return weight_groups_.begin();
     }
 
-    EdgeIterPair add_edges(size_t num_edges);
+    GroupList<Weight>::ConstIterator weight_group_begin() const
+    {
+        return weight_groups_.begin();
+    }
 
-    EdgeGroupIter edge_group_begin()
+    GroupList<Weight>::Iterator weight_group_end()
+    {
+        return weight_groups_.end();
+    }
+
+    GroupList<Weight>::ConstIterator weight_group_end() const
+    {
+        return weight_groups_.end();
+    }
+
+    Group<Edge>& add_edges(size_t num_edges);
+
+    size_t num_edges() const
+    {
+        return edge_groups_.num_items();
+    }
+
+    GroupList<Edge>::Iterator edge_group_begin()
     {
         return edge_groups_.begin();
     }
 
-    EdgeIterPair link(Node *tail, Node *head);
+    GroupList<Edge>::ConstIterator edge_group_begin() const
+    {
+        return edge_groups_.begin();
+    }
 
-    EdgeIterPair link(Node *tail, Node *head, Weight *weight);
+    GroupList<Edge>::Iterator edge_group_end()
+    {
+        return edge_groups_.end();
+    }
 
-    EdgeIterPair link(Node *tail, NodeIterPair heads);
+    GroupList<Edge>::ConstIterator edge_group_end() const
+    {
+        return edge_groups_.end();
+    }
 
-    EdgeIterPair link(Node *tail, NodeIterPair heads, WeightIterPair weights);
+    Group<Edge>& link(Node *tail, Node *head);
 
-    EdgeIterPair link(NodeIterPair tails, NodeIterPair heads);
+    Group<Edge>& link(Node *tail, Node *head, Weight *weight);
 
-    EdgeIterPair link(NodeIterPair tails, NodeIterPair heads, WeightIterPair weights);
+    Group<Edge>& link(Node *tail, Group<Node>::Range heads);
 
-    EdgeIterPair link(NodeIterPair tails, Node *head);
+    Group<Edge>& link(Node *tail, Group<Node>::Range heads, Group<Weight>::Range weights);
 
-    EdgeIterPair link(NodeIterPair tails, Node *head, WeightIterPair weights);
+    Group<Edge>& link(Group<Node>::Range tails, Group<Node>::Range heads);
+
+    Group<Edge>& link(Group<Node>::Range tails, Group<Node>::Range heads, Group<Weight>::Range weights);
+
+    Group<Edge>& link(Group<Node>::Range tails, Node *head);
+
+    Group<Edge>& link(Group<Node>::Range tails, Node *head, Group<Weight>::Range weights);
 
     void feed_forward(const Point& input);
 
@@ -110,12 +158,10 @@ public:
 
     void add_gradient();
 
-private:
+//private:
     GroupList<Node> node_groups_;
-    size_t input_size_;
-    NodeIterPair input_iter_pair_;
-    size_t output_size_;
-    NodeIterPair output_iter_pair_;
+    Group<Node> *inputs_;
+    Group<Node> *outputs_;
     size_t num_biases_;
     size_t num_hiddens_;
 
@@ -129,6 +175,8 @@ private:
     void init_input(const Point& input);
 
     void clear_node_flags();
+
+    void zero_gradient();
 
     void add_out_nodes_to_queue(Node *n);
 
