@@ -1,2 +1,4 @@
-bin/
-test/bin/
+bin/*
+test/unit/bin/*
+test/tools/bin/*
+test/integration/bin/*

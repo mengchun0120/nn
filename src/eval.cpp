@@ -4,7 +4,7 @@
 #include "neural_net.hpp"
 #include "eval.hpp"
 
-double EuclidDistEvaluateFunc::operator()(NeuralNet *net, const DataSet& inputs, const DataSet& targets)
+double EuclidDistEvaluateFunc::operator()(NeuralNet *net, const Batch& inputs, const Batch& targets)
 {
     assert(net && inputs.size() == targets.size() && inputs.size() > 0);
 
@@ -16,10 +16,10 @@ double EuclidDistEvaluateFunc::operator()(NeuralNet *net, const DataSet& inputs,
 
         double dist = 0.0;
         auto output_it = outputs.begin();
-        auto target_it = targets[i].begin();
+        double *target = targets[i];
 
-        for(; output_it != outputs.end(); ++output_it, ++target_it) {
-            double d = output_it->output() - *target_it;
+        for(; output_it != outputs.end(); ++output_it, ++target) {
+            double d = output_it->output() - *target;
             dist += d * d;
         }
         dist = sqrt(dist);

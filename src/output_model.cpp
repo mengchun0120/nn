@@ -9,10 +9,8 @@ void IdentityOutputProc::operator()(Group<Node>::Range outputs)
     }
 }
 
-double SquareLossFunc::operator()(Group<Node>::Range outputs, const Point& target)
+double SquareLossFunc::operator()(Group<Node>::Range outputs, const double *target)
 {
-    assert(Group<Node>::size(outputs) == target.size());
-
     double loss = 0.0;
     size_t i = 0;
 
@@ -25,10 +23,8 @@ double SquareLossFunc::operator()(Group<Node>::Range outputs, const Point& targe
     return loss;
 }
 
-void SquareLossErrorProc::operator()(Group<Node>::Range outputs, const Point& target)
+void SquareLossErrorProc::operator()(Group<Node>::Range outputs, const double *target)
 {
-    assert(Group<Node>::size(outputs) == target.size());
-
     size_t i = 0;
 
     for(auto it = outputs.first; it != outputs.second; ++it, ++i) {

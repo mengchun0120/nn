@@ -225,7 +225,7 @@ void NeuralNet::clear_node_flags()
     node_groups_.foreach(zero_flag);
 }
 
-void NeuralNet::init_input(const Point& input)
+void NeuralNet::init_input(const double* input)
 {
     size_t i = 0;
     for(auto it = inputs_->begin(); it != inputs_->end(); ++it, ++i) {
@@ -258,15 +258,14 @@ void NeuralNet::init_queue_feed_forward()
     }
 }
 
-void NeuralNet::init_feed_forward(const Point& input)
+void NeuralNet::init_feed_forward(const double *input)
 {
     init_input(input);
     clear_node_flags();
-    zero_gradient();
     init_queue_feed_forward();
 }
 
-void NeuralNet::feed_forward(const Point& input)
+void NeuralNet::feed_forward(const double *input)
 {
     init_feed_forward(input);
     while(!queue_.empty()) {
@@ -299,13 +298,13 @@ void NeuralNet::init_queue_back_prop()
     }
 }
 
-void NeuralNet::init_back_prop(const Point& target)
+void NeuralNet::init_back_prop(const double *target)
 {
     output_model_->output_err_proc(outputs_->range(), target);
     init_queue_back_prop();
 }
 
-void NeuralNet::back_prop(const Point& target)
+void NeuralNet::back_prop(const double *target)
 {
     init_back_prop(target);
     while(!queue_.empty()) {

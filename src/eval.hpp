@@ -1,16 +1,16 @@
 #ifndef __EVAL_HPP__
 #define __EVAL_HPP__
 
-#include "types.hpp"
 #include <functional>
+#include "batch.hpp"
 
 class NeuralNet;
 
-typedef std::function<double(NeuralNet *, const DataSet&, const DataSet&)> EvaluateFunc;
+typedef std::function<double(NeuralNet *, const Batch&, const Batch&)> EvaluateFunc;
 
 class EuclidDistEvaluateFunc {
 public:
-    double operator()(NeuralNet *net, const DataSet& inputs, const DataSet& targets);
+    double operator()(NeuralNet *net, const Batch& inputs, const Batch& targets);
 };
 
 #endif

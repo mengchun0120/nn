@@ -13,8 +13,8 @@ int main(int argc, const char *argv[])
         {{1., 2.}, {3., -1.}, {-2.8, -3.2}},
         {{4., 5.}, {6., -4.}, {2.7, 2.8}}
     };
-    vector<double> input{2.5, 1.7};
-    vector<double> target{1.5, 2.7};
+    double input[]{2.5, 1.7};
+    double target[]{1.5, 2.7};
 
     ActFunc act_func = ActFunc::relinear_act_func();
     OutputModel output_model = OutputModel::square_loss_regression_model();

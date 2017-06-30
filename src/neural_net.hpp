@@ -4,7 +4,6 @@
 #include <cassert>
 #include <cstddef>
 #include <deque>
-#include "types.hpp"
 #include "node.hpp"
 #include "weight.hpp"
 #include "edge.hpp"
@@ -152,9 +151,9 @@ public:
 
     Group<Edge>& link(Group<Node>::Range tails, Node *head, Group<Weight>::Range weights);
 
-    void feed_forward(const Point& input);
+    void feed_forward(const double* input);
 
-    void back_prop(const Point& target);
+    void back_prop(const double* target);
 
     void add_gradient();
 
@@ -173,6 +172,8 @@ public:
         weight_groups_.foreach(f);
     }
 
+    void zero_gradient();
+
 private:
     GroupList<Node> node_groups_;
     Group<Node> *inputs_;
@@ -187,23 +188,21 @@ private:
 
     OutputModel *output_model_;
 
-    void init_input(const Point& input);
+    void init_input(const double *input);
 
     void clear_node_flags();
-
-    void zero_gradient();
 
     void add_out_nodes_to_queue(Node *n);
 
     void init_queue_feed_forward();
 
-    void init_feed_forward(const Point& input);
+    void init_feed_forward(const double *input);
 
     void add_in_nodes_to_queue(Node *n);
 
     void init_queue_back_prop();
 
-    void init_back_prop(const Point& target);
+    void init_back_prop(const double *target);
 };
 
 #endif

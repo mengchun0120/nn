@@ -5,8 +5,8 @@
 #include "neural_net.hpp"
 
 typedef std::function<void(Group<Node>::Range)> OutputProc;
-typedef std::function<double(Group<Node>::Range, const Point&)> LossFunc;
-typedef std::function<void(Group<Node>::Range, const Point&)> OutputErrorProc;
+typedef std::function<double(Group<Node>::Range, const double *)> LossFunc;
+typedef std::function<void(Group<Node>::Range, const double *)> OutputErrorProc;
 
 class IdentityOutputProc {
 public:
@@ -15,12 +15,12 @@ public:
 
 class SquareLossFunc {
 public:
-    double operator()(Group<Node>::Range outputs, const Point& target);
+    double operator()(Group<Node>::Range outputs, const double *target);
 };
 
 class SquareLossErrorProc {
 public:
-    void operator()(Group<Node>::Range outputs, const Point& target);
+    void operator()(Group<Node>::Range outputs, const double *target);
 };
 
 class OutputModel {
