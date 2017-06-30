@@ -21,10 +21,13 @@ TEST_TOOL_TASK=$(TEST_TOOL_BIN_DIR)/libtool.so
 TEST_OBJS=$(UNIT_TEST_OBJS) $(TEST_TOOL_OBJS)
 
 debug: CPPFLAGS=$(DEBUG_FLAGS)
-debug: $(MAIN_TASK) $(UNIT_TEST_OBJS) $(TEST_TOOL_TASK) unittest
+debug: check_folder $(MAIN_TASK) $(UNIT_TEST_OBJS) $(TEST_TOOL_TASK) unittest
 
 release: CPPFLAGS=$(RELEASE_FLAGS)
-release: $(MAIN_TASK) $(UNIT_TEST_OBJS) $(TEST_TOOL_TASK) unittest
+release: check_folder $(MAIN_TASK) $(UNIT_TEST_OBJS) $(TEST_TOOL_TASK) unittest
+
+check_folder:
+	./check_folder.sh
 
 unittest: $(UNIT_TEST_OBJS)
 	./run_all_unit_test.sh
