@@ -13,7 +13,8 @@ LearnEngine::LearnEngine(NeuralNet *net, EvaluateFunc *eval_func, WeightInitiali
 
 void LearnEngine::learn(const Batch& test_set, const Batch& test_target,
            const Batch& validate_set, const Batch& validate_target,
-           size_t batch_size, size_t num_epochs, double learn_rate, size_t early_stop_thresh)
+           size_t batch_size, size_t num_epochs, double learn_rate,
+           size_t early_stop_thresh, std::function<void(double)> *epoch_func)
 {
     assert(test_set.size() == test_target.size() &&
            validate_set.size() == validate_target.size());
@@ -40,6 +41,8 @@ void LearnEngine::learn(const Batch& test_set, const Batch& test_target,
             }
         }
         old_error = new_error;
+
+        if(epoch_func) (*epoch_func)(new_error);
     }
 }
 

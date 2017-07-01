@@ -1,10 +1,13 @@
 #ifndef __GROUP_LIST_HPP__
 #define __GROUP_LIST_HPP__
 
-#include <cstddef>
-#include <list>
-#include <functional>
+#ifndef __COMMON_HPP__
+#include "common.hpp"
+#endif
+
+#ifndef __GROUP_HPP__
 #include "group.hpp"
+#endif
 
 template <typename T>
 class GroupList {
@@ -51,7 +54,7 @@ public:
         return groups_.end();
     }
 
-    void foreach(std::function<void(T&)> f)
+    void foreach(const std::function<void(T&)> &f)
     {
         for(auto it = begin(); it != end(); ++it) {
             for(auto it1 = it->begin(); it1 != it->end(); ++it1) {

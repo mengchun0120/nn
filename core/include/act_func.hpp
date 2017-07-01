@@ -1,7 +1,9 @@
 #ifndef __ACT_FUNC_HPP__
 #define __ACT_FUNC_HPP__
 
-#include <functional>
+#ifndef __COMMON_HPP__
+#include "common.hpp"
+#endif
 
 class Node;
 typedef std::function<double(Node *)> ActivationFunc;

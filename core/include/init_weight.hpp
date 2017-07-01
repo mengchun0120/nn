@@ -1,8 +1,9 @@
 #ifndef __INIT_WEIGHT_HPP__
 #define __INIT_WEIGHT_HPP__
 
-#include <functional>
-#include <random>
+#ifndef __COMMON_HPP__
+#include "common.hpp"
+#endif
 
 class WeightInitializer {
 public:

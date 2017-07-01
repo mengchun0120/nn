@@ -1,6 +1,5 @@
 #include "neural_net.hpp"
 #include "output_model.hpp"
-#include <iostream>
 
 using namespace std;
 

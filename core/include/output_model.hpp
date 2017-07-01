@@ -1,8 +1,17 @@
 #ifndef __OBJ_MODEL_HPP__
 #define __OBJ_MODEL_HPP__
 
-#include <functional>
-#include "neural_net.hpp"
+#ifndef __COMMON_HPP__
+#include "common.hpp"
+#endif
+
+#ifndef __NODE_HPP__
+#include "node.hpp"
+#endif
+
+#ifndef __GROUP_HPP__
+#include "group.hpp"
+#endif
 
 typedef std::function<void(Group<Node>::Range)> OutputProc;
 typedef std::function<double(Group<Node>::Range, const double *)> LossFunc;

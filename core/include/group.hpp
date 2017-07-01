@@ -1,10 +1,9 @@
 #ifndef __GROUP_HPP__
 #define __GROUP_HPP__
 
-#include <cassert>
-#include <cstddef>
-#include <vector>
-#include <utility>
+#ifndef __COMMON_HPP__
+#include "common.hpp"
+#endif
 
 template <typename T>
 class Group {

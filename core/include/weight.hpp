@@ -1,7 +1,9 @@
 #ifndef __WEIGHT_HPP__
 #define __WEIGHT_HPP__
 
-#include <cassert>
+#ifndef __COMMON_HPP__
+#include "common.hpp"
+#endif
 
 class Weight {
 public:

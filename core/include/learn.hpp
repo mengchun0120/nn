@@ -1,11 +1,13 @@
 #ifndef __LEARN_HPP__
 #define __LEARN_HPP__
 
-#include <cassert>
-#include <cstddef>
-#include <vector>
-#include <random>
+#ifndef __COMMON_HPP__
+#include "common.hpp"
+#endif
+
+#ifndef __EVAL_HPP__
 #include "eval.hpp"
+#endif
 
 class NeuralNet;
 class WeightInitializer;
@@ -21,7 +23,8 @@ public:
 
     void learn(const Batch& test_set, const Batch& test_target,
                const Batch& validate_set, const Batch& validate_target,
-               size_t batch_size, size_t num_epochs, double learn_rate, size_t early_stop_thresh);
+               size_t batch_size, size_t num_epochs, double learn_rate, size_t early_stop_thresh,
+               std::function<void(double)> *epoch_func=nullptr);
 
 private:
     NeuralNet *net_;

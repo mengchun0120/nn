@@ -1,13 +1,25 @@
 #ifndef __NEURAL_NET_HPP__
 #define __NEURAL_NET_HPP__
 
-#include <cassert>
-#include <cstddef>
-#include <deque>
+#ifndef __COMMON_HPP__
+#include "common.hpp"
+#endif
+
+#ifndef __NODE_HPP__
 #include "node.hpp"
-#include "weight.hpp"
+#endif
+
+#ifndef __EDGE_HPP__
 #include "edge.hpp"
+#endif
+
+#ifndef __WEIGHT_HPP__
+#include "weight.hpp"
+#endif
+
+#ifndef __GROUP_LIST_HPP__
 #include "group_list.hpp"
+#endif
 
 class OutputModel;
 

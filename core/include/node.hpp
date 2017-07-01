@@ -1,9 +1,9 @@
 #ifndef __NODE_HPP__
 #define __NODE_HPP__
 
-#include <cassert>
-#include <cstddef>
-#include <vector>
+#ifndef __COMMON_HPP__
+#include "common.hpp"
+#endif
 
 class Edge;
 class ActFunc;

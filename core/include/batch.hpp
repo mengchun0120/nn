@@ -1,8 +1,9 @@
 #ifndef __BATCH_HPP__
 #define __BATCH_HPP__
 
-#include <cstddef>
-#include <vector>
+#ifndef __COMMON_HPP__
+#include "common.hpp"
+#endif
 
 class Batch: public std::vector<double *> {
 public:

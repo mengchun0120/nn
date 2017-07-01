@@ -3,3 +3,4 @@ test/unit/bin/*
 test/tools/bin/*
 test/integration/bin/*
 test/integration/data/*
+core/include/*.gch
