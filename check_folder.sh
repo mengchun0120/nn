@@ -1,6 +1,6 @@
 #!/bin/bash
 
-folders="bin test/unit/bin test/tools/bin test/integration/bin"
+folders="bin test/unit/bin test/tools/bin test/integration/bin test/integration/data"
 
 for folder in $folders; do
     if [ -d $folder ]; then

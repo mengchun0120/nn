@@ -11,9 +11,9 @@ class SimpleDataGenerator {
 
     static std::vector<NameFuncPair> name_func_pairs;
 public:
-    SimpleDataGenerator *linear_generator(double slope, double intercept, double stddev);
+    static SimpleDataGenerator *linear_generator(double slope, double intercept, double stddev);
 
-    SimpleDataGenerator *named_func_generator(const char *name, double stddev);
+    static SimpleDataGenerator *named_func_generator(const char *name, double stddev);
 
     SimpleDataGenerator(std::function<double(double)> f, double stddev):
         func_(f), rd_(), gen_()

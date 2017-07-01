@@ -2,3 +2,4 @@ bin/*
 test/unit/bin/*
 test/tools/bin/*
 test/integration/bin/*
+test/integration/data/*
