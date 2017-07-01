@@ -1,13 +1,15 @@
-SRC_DIR=src
+SRC_DIR=core/src
+INCLUDE_DIR=core/include
 BIN_DIR=bin
 UNIT_TEST_DIR=test/unit
 UNIT_TEST_BIN_DIR=test/unit/bin
-TEST_TOOL_DIR=test/tools
+TEST_TOOL_DIR=test/tools/src
+TEST_TOOL_INCLUDE_DIR=test/tools/include
 TEST_TOOL_BIN_DIR=test/tools/bin
 INTG_TEST_DIR=test/integration
 INTG_TEST_BIN_DIR=test/integration/bin
 LIBS=-lm
-COMMON_FLAGS=-std=c++11 -Wall -fpic -I$(SRC_DIR) -I$(TEST_TOOL_DIR) -L$(BIN_DIR) -L$(TEST_TOOL_BIN_DIR)
+COMMON_FLAGS=-std=c++11 -Wall -fpic -I$(INCLUDE_DIR) -I$(TEST_TOOL_INCLUDE_DIR) -L$(BIN_DIR) -L$(TEST_TOOL_BIN_DIR)
 DEBUG_FLAGS=-g $(COMMON_FLAGS)
 RELEASE_FLAGS=-O3 $(COMMON_FLAGS) -DNDEBUG
 MAIN_TASK=$(BIN_DIR)/libnn.so
@@ -37,13 +39,13 @@ unittest: $(UNIT_TEST_OBJS)
 $(MAIN_TASK): $(OBJS)
 	g++ -shared $(CPPFLAGS) -o $@ $^ $(LIBS)
 
-$(BIN_DIR)/%.o: $(SRC_DIR)/%.cpp $(SRC_DIR)/%.hpp
+$(BIN_DIR)/%.o: $(SRC_DIR)/%.cpp $(INCLUDE_DIR)/%.hpp
 	g++ $(CPPFLAGS) -c -o $@ $<
 
 $(UNIT_TEST_BIN_DIR)/%: $(UNIT_TEST_DIR)/%.cpp $(OBJS)
 	g++ $(DEBUG_FLAGS) -o $@ $^ $(LIBS)
 
-$(TEST_TOOL_BIN_DIR)/%.o: $(TEST_TOOL_DIR)/%.cpp $(TEST_TOOL_DIR)/%.hpp $(MAIN_TASK)
+$(TEST_TOOL_BIN_DIR)/%.o: $(TEST_TOOL_DIR)/%.cpp $(TEST_TOOL_INCLUDE_DIR)/%.hpp $(MAIN_TASK)
 	g++ $(CPPFLAGS) -c -o $@ $< -lnn
 
 $(TEST_TOOL_TASK): $(TEST_TOOL_OBJS)

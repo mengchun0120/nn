@@ -37,7 +37,6 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-
     double slope, intercept, stddev, xmin, xmax;
     bool slope_avail = false, intercept_avail = false, stddev_avail = false;
     bool xmin_avail = false, xmax_avail = false;
