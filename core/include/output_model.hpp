@@ -13,23 +13,23 @@
 #include "group.hpp"
 #endif
 
-typedef std::function<void(Group<Node>::Range)> OutputProc;
-typedef std::function<double(Group<Node>::Range, const double *)> LossFunc;
-typedef std::function<void(Group<Node>::Range, const double *)> OutputErrorProc;
+typedef std::function<void(const Group<Node>::Range&)> OutputProc;
+typedef std::function<double(const Group<Node>::Range&, const double *)> LossFunc;
+typedef std::function<void(const Group<Node>::Range&, const double *)> OutputErrorProc;
 
 class IdentityOutputProc {
 public:
-    void operator()(Group<Node>::Range outputs);
+    void operator()(const Group<Node>::Range& outputs);
 };
 
 class SquareLossFunc {
 public:
-    double operator()(Group<Node>::Range outputs, const double *target);
+    double operator()(const Group<Node>::Range& outputs, const double *target);
 };
 
 class SquareLossErrorProc {
 public:
-    void operator()(Group<Node>::Range outputs, const double *target);
+    void operator()(const Group<Node>::Range& outputs, const double *target);
 };
 
 class OutputModel {

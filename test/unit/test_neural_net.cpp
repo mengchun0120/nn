@@ -19,10 +19,15 @@ int main(int argc, const char *argv[])
     ActFunc act_func = ActFunc::relinear_act_func();
     OutputModel output_model = OutputModel::square_loss_regression_model();
     NeuralNet net(&output_model);
-    Group<Node>& inputs = net.add_inputs(layer_nodes[0]);
-    Group<Node>& biases = net.add_biases(2);
-    Group<Node>& hiddens = net.add_hiddens(layer_nodes[1], &act_func);
-    Group<Node>& outputs = net.add_outputs(layer_nodes[2]);
+
+    Group<Node>& inputs = net.add_nodes(layer_nodes[0]);
+    net.set_inputs(inputs.range());
+
+    Group<Node>& biases = net.add_nodes(2);
+    Group<Node>& hiddens = net.add_nodes(layer_nodes[1], &act_func);
+
+    Group<Node>& outputs = net.add_nodes(layer_nodes[2]);
+    net.set_outputs(outputs.range());
 
     Group<Edge> *edges[] = {&net.link(inputs.range(), hiddens.range()), &net.link(hiddens.range(), outputs.range())};
     Group<Edge> *bias_edges[] = {&net.link(&biases[0], hiddens.range()),

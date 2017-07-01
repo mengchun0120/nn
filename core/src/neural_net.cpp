@@ -4,41 +4,17 @@
 using namespace std;
 
 NeuralNet::NeuralNet(OutputModel *output_model):
-    num_biases_(0),
-    num_hiddens_(0),
     output_model_(output_model)
 {
 
 }
 
-Group<Node>& NeuralNet::add_inputs(size_t num_inputs)
+Group<Node>& NeuralNet::add_nodes(size_t num_nodes, ActFunc *act_func)
 {
-    auto& g = node_groups_.add(num_inputs);
-    inputs_ = &g;
-    return g;
-}
-
-Group<Node>& NeuralNet::add_outputs(size_t num_outputs)
-{
-    auto& g = node_groups_.add(num_outputs);
-    outputs_ = &g;
-    return g;
-}
-
-Group<Node>& NeuralNet::add_biases(size_t num_biases)
-{
-    auto& g = node_groups_.add(num_biases);
-    num_biases_ += num_biases;
-    return g;
-}
-
-Group<Node>& NeuralNet::add_hiddens(size_t num_hiddens, ActFunc *act_func)
-{
-    auto& g = node_groups_.add(num_hiddens);
+    auto& g = node_groups_.add(num_nodes);
     for(auto it = g.begin(); it != g.end(); ++it) {
         it->set_act_func(act_func);
     }
-    num_hiddens_ += num_hiddens;
     return g;
 }
 
@@ -227,7 +203,7 @@ void NeuralNet::clear_node_flags()
 void NeuralNet::init_input(const double* input)
 {
     size_t i = 0;
-    for(auto it = inputs_->begin(); it != inputs_->end(); ++it, ++i) {
+    for(auto it = inputs_.first; it != inputs_.second; ++it, ++i) {
         it->set_output(input[i]);
     }
 }
@@ -252,7 +228,7 @@ void NeuralNet::add_out_nodes_to_queue(Node *n)
 void NeuralNet::init_queue_feed_forward()
 {
     queue_.clear();
-    for(auto input_it = inputs_->begin(); input_it != inputs_->end(); ++input_it) {
+    for(auto input_it = inputs_.first; input_it != inputs_.second; ++input_it) {
         add_out_nodes_to_queue(&(*input_it));
     }
 }
@@ -276,7 +252,7 @@ void NeuralNet::feed_forward(const double *input)
         add_out_nodes_to_queue(n);
     }
 
-    output_model_->output_proc(outputs_->range());
+    output_model_->output_proc(outputs_);
 }
 
 void NeuralNet::add_in_nodes_to_queue(Node *n)
@@ -292,14 +268,14 @@ void NeuralNet::add_in_nodes_to_queue(Node *n)
 
 void NeuralNet::init_queue_back_prop()
 {
-    for(auto it = outputs_->begin(); it != outputs_->end(); ++it) {
+    for(auto it = outputs_.first; it != outputs_.second; ++it) {
         add_in_nodes_to_queue(&(*it));
     }
 }
 
 void NeuralNet::init_back_prop(const double *target)
 {
-    output_model_->output_err_proc(outputs_->range(), target);
+    output_model_->output_err_proc(outputs_, target);
     init_queue_back_prop();
 }
 

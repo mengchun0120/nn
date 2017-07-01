@@ -7,7 +7,10 @@
 
 class FullyConnectedNet: public NeuralNet {
 public:
-    FullyConnectedNet(std::vector<size_t> )
+    FullyConnectedNet(std::vector<size_t> layers);
+
+protected:
+    
 };
 
 #endif

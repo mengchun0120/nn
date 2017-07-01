@@ -17,14 +17,13 @@ RELEASE_FLAGS=-O3 $(COMMON_FLAGS) -DNDEBUG
 COMMON_HEADER=$(INCLUDE_DIR)/common.hpp.gch
 MAIN_TASK=$(BIN_DIR)/libnn.so
 OBJS=$(BIN_DIR)/group.o $(BIN_DIR)/group_list.o $(BIN_DIR)/weight.o $(BIN_DIR)/batch.o \
-	 $(BIN_DIR)/act_func.o $(BIN_DIR)/node.o $(BIN_DIR)/edge.o $(BIN_DIR)/output_model.o \
-	 $(BIN_DIR)/neural_net.o $(BIN_DIR)/init_weight.o $(BIN_DIR)/eval.o $(BIN_DIR)/learn.o
+	$(BIN_DIR)/act_func.o $(BIN_DIR)/node.o $(BIN_DIR)/edge.o $(BIN_DIR)/output_model.o \
+	$(BIN_DIR)/neural_net.o $(BIN_DIR)/init_weight.o $(BIN_DIR)/eval.o $(BIN_DIR)/learn.o
 UNIT_TEST_OBJS=$(UNIT_TEST_BIN_DIR)/test_group_list $(UNIT_TEST_BIN_DIR)/test_node \
 	$(UNIT_TEST_BIN_DIR)/test_neural_net
 TEST_TOOL_OBJS=$(TEST_TOOL_BIN_DIR)/simple_data_generator.o $(TEST_TOOL_BIN_DIR)/data_tools.o \
 	$(TEST_TOOL_BIN_DIR)/config_parser.o
 TEST_TOOL_TASK=$(TEST_TOOL_BIN_DIR)/libtool.so
-TEST_OBJS=$(UNIT_TEST_OBJS) $(TEST_TOOL_OBJS)
 INTG_TEST_OBJS=$(INTG_TEST_BIN_DIR)/gen_linear_data
 
 debug: CPPFLAGS=$(DEBUG_FLAGS)
@@ -48,8 +47,8 @@ $(MAIN_TASK): $(OBJS)
 $(BIN_DIR)/%.o: $(SRC_DIR)/%.cpp $(INCLUDE_DIR)/%.hpp $(COMMON_HEADER)
 	g++ $(CPPFLAGS) -c -o $@ $<
 
-$(UNIT_TEST_BIN_DIR)/%: $(UNIT_TEST_DIR)/%.cpp $(OBJS)
-	g++ $(DEBUG_FLAGS) -o $@ $^ $(LIBS)
+$(UNIT_TEST_BIN_DIR)/%: $(UNIT_TEST_DIR)/%.cpp $(MAIN_TASK)
+	g++ $(DEBUG_FLAGS) -o $@ $< $(LIBS) -lnn
 
 $(TEST_TOOL_BIN_DIR)/%.o: $(TEST_TOOL_DIR)/%.cpp $(TEST_TOOL_INCLUDE_DIR)/%.hpp $(MAIN_TASK)
 	g++ $(CPPFLAGS) -c -o $@ $< -lnn

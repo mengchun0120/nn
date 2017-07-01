@@ -2,14 +2,14 @@
 #include "neural_net.hpp"
 #include "output_model.hpp"
 
-void IdentityOutputProc::operator()(Group<Node>::Range outputs)
+void IdentityOutputProc::operator()(const Group<Node>::Range& outputs)
 {
     for(auto it = outputs.first; it != outputs.second; ++it) {
         it->set_output(it->act());
     }
 }
 
-double SquareLossFunc::operator()(Group<Node>::Range outputs, const double *target)
+double SquareLossFunc::operator()(const Group<Node>::Range& outputs, const double *target)
 {
     double loss = 0.0;
     size_t i = 0;
@@ -23,7 +23,7 @@ double SquareLossFunc::operator()(Group<Node>::Range outputs, const double *targ
     return loss;
 }
 
-void SquareLossErrorProc::operator()(Group<Node>::Range outputs, const double *target)
+void SquareLossErrorProc::operator()(const Group<Node>::Range& outputs, const double *target)
 {
     size_t i = 0;
 

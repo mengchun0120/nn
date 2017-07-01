@@ -30,43 +30,37 @@ public:
     virtual ~NeuralNet()
     {}
 
-    Group<Node>& add_inputs(size_t num_inputs);
-
-    Group<Node>& get_inputs()
+    void set_inputs(const Group<Node>::Range& r)
     {
-        return *inputs_;
+        inputs_ = r;
+    }
+
+    Group<Node>::Range& inputs()
+    {
+        return inputs_;
     }
 
     size_t input_size() const
     {
-        return inputs_->size();
+        return Group<Node>::size(inputs_);
     }
 
-    Group<Node>& add_outputs(size_t num_outputs);
-
-    Group<Node>& get_outputs()
+    void set_outputs(const Group<Node>::Range& r)
     {
-        return *outputs_;
+        outputs_ = r;
+    }
+
+    Group<Node>::Range& outputs()
+    {
+        return outputs_;
     }
 
     size_t output_size() const
     {
-        return outputs_->size();
+        return Group<Node>::size(outputs_);
     }
 
-    Group<Node>& add_biases(size_t num_biases);
-
-    size_t num_biases() const
-    {
-        return num_biases_;
-    }
-
-    Group<Node>& add_hiddens(size_t num_hiddens, ActFunc *act_func);
-
-    size_t num_hiddens() const
-    {
-        return num_hiddens_;
-    }
+    Group<Node>& add_nodes(size_t num_nodes, ActFunc *act_func=nullptr);
 
     size_t num_nodes() const
     {
@@ -186,12 +180,10 @@ public:
 
     void zero_gradient();
 
-private:
+protected:
     GroupList<Node> node_groups_;
-    Group<Node> *inputs_;
-    Group<Node> *outputs_;
-    size_t num_biases_;
-    size_t num_hiddens_;
+    Group<Node>::Range inputs_;
+    Group<Node>::Range outputs_;
 
     GroupList<Edge> edge_groups_;
     GroupList<Weight> weight_groups_;
