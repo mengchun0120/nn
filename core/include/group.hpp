@@ -71,8 +71,32 @@ public:
 
     Range range(size_t start, size_t num)
     {
-        assert(start + num < size());
+        assert(start + num <= size());
         return Range(begin()+start, begin()+(start+num));
+    }
+
+    T& front()
+    {
+        assert(items_.size() > 0);
+        return items_.front();
+    }
+
+    const T& front() const
+    {
+        assert(items_.size() > 0);
+        return items_.front();
+    }
+
+    T& back()
+    {
+        assert(items_.size() > 0);
+        return items_.back();
+    }
+
+    const T& back() const
+    {
+        assert(items_.size() > 0);
+        return items_.back();
     }
 
 private:

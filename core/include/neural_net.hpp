@@ -180,6 +180,8 @@ public:
 
     void zero_gradient();
 
+    void clear();
+
 protected:
     GroupList<Node> node_groups_;
     Group<Node>::Range inputs_;

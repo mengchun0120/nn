@@ -63,6 +63,11 @@ public:
         }
     }
 
+    void clear()
+    {
+        groups_.clear();
+    }
+
 protected:
     std::list<Group<T>> groups_;
     size_t num_items_;

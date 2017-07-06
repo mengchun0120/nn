@@ -214,6 +214,18 @@ void NeuralNet::zero_gradient()
     weight_groups_.foreach(zero_der);
 }
 
+void NeuralNet::clear()
+{
+    node_groups_.clear();
+    edge_groups_.clear();
+    weight_groups_.clear();
+
+    inputs_.second = inputs_.first;
+    outputs_.second = outputs_.first;
+
+    queue_.clear();
+}
+
 void NeuralNet::add_out_nodes_to_queue(Node *n)
 {
     for(auto it = n->out_edge_begin(); it != n->out_edge_end(); ++it) {

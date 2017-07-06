@@ -1,10 +1,6 @@
 #ifndef __WEIGHT_HPP__
 #define __WEIGHT_HPP__
 
-#ifndef __COMMON_HPP__
-#include "common.hpp"
-#endif
-
 class Weight {
 public:
     Weight():

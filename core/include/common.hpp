@@ -16,5 +16,6 @@
 #include <string>
 #include <functional>
 #include <stdexcept>
+#include <algorithm>
 
 #endif
